@@ -1,11 +1,32 @@
 plugins {
-    id "com.vanniktech.maven.publish" version "0.19.0" apply false
+    id('maven-publish')
 }
 
-allprojects {
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublish {
-            sonatypeHost = "S01"
+subprojects {
+    afterEvaluate {
+        if (it.plugins.hasPlugin('maven-publish')) {
+            publishing {
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/cronometersoftware/openai-java")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+                publications {
+                    "$project.name"(MavenPublication) {
+                        afterEvaluate {
+                            groupId GROUP
+                            artifactId property("POM_ARTIFACT_ID");
+                            version VERSION_NAME
+                            from components.java
+                        }
+                    }
+                }
+            }
         }
     }
 }

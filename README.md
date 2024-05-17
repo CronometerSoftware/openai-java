@@ -165,12 +165,6 @@ Or for an example using functions and stream: [OpenAiApiFunctionsWithStreamExamp
 If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
 This is not necessary for non-streaming calls.
 
-## Local Maven Deploy
-Command: `publishToMavenLocal -PRELEASE_SIGNING_ENABLED=false`  
-`-PRELEASE_SIGNING_ENABLED` will disable artifact signing not needed for local publishes (got an error without this)  
-
-Default maven location is `~/.m2/repository` to specify a location use `-Dmaven.repo.local=<LOCATION>/.m2/repository`
-
 ## Running the example project
 All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
 ```bash
@@ -188,6 +182,12 @@ Or functions with 'stream' mode enabled:
 ```bash
 ./gradlew runExampleThree
 ```
+
+## Publishing a package
+
+Update the ```VERSION_NAME``` in ```gradle.properties``` to a new version.
+Then create a new release tag in the format ```[0-9]+.[0-9]+.[0-9]+-Cronometer```.
+A GitHub publish action will be triggered on tag creation, causing new package artifacts to be created.
 
 ## FAQ
 ### Does this support GPT-4?
